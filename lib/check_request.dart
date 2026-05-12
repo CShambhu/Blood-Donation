@@ -34,7 +34,7 @@ class _CheckRequestState extends State<CheckRequest> {
                   ),
                 ),
                 Positioned(
-                  top: 350,
+                  top: 190,
                   left: 0,
                   right: 0,
                   child: Padding(
@@ -53,6 +53,12 @@ class _CheckRequestState extends State<CheckRequest> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                Text("Patient's Name:"),
+                                SizedBox(height: 10),
+                                Text("Hospital Name:"),
+                                SizedBox(height: 10),
+                                Text("Required Blood:"),
+                                Divider(),
                                 Text("Patient's Name:"),
                                 SizedBox(height: 10),
                                 Text("Hospital Name:"),

@@ -11,6 +11,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -99,47 +100,73 @@ class _LoginState extends State<Login> {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        TextField(
-                          controller: usernameController,
-                          decoration: InputDecoration(
-                            hintText: "Enter your username",
-                            label: Text("Username"),
-                            border: OutlineInputBorder(),
-                          ),
-                        ),
-
-                        SizedBox(height: 10),
-
-                        TextField(
-                          controller: passwordController,
-                          decoration: InputDecoration(
-                            label: Text("Password"),
-                            hintText: "Enter your Password",
-                            border: OutlineInputBorder(),
-                          ),
-                        ),
-
-                        SizedBox(height: 20),
-
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red,
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          TextFormField(
+                            controller: usernameController,
+                            decoration: InputDecoration(
+                              hintText: "Enter your username",
+                              label: Text("Username"),
+                              border: OutlineInputBorder(),
                             ),
-                            onPressed: () {
-                              onLogin(context);
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "please enter username";
+                              } else {
+                                return null;
+                              }
                             },
-                            child: Text(
-                              "Login",
-                              style: TextStyle(color: Colors.white),
+                          ),
+
+                          SizedBox(height: 10),
+
+                          TextFormField(
+                            controller: passwordController,
+                            decoration: InputDecoration(
+                              label: Text("Password"),
+                              hintText: "Enter your Password",
+                              border: OutlineInputBorder(),
+                            ),
+
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "please enter password";
+                              }
+                              if (value.length < 8) {
+                                return "password length should be 8 or more";
+                              } else {
+                                return null;
+                              }
+                            },
+                          ),
+
+                          SizedBox(height: 20),
+
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.red,
+                              ),
+                              onPressed: () {
+                                if (_formKey.currentState!.validate()) {
+                                  onLogin(context);
+                                }
+                              },
+                              child: Text(
+                                "Login",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -151,7 +178,7 @@ class _LoginState extends State<Login> {
                 right: 0,
                 child: Column(
                   children: [
-                    Text("Or Login with"),
+                    Text("Or Login with", style: TextStyle(fontSize: 15)),
 
                     SizedBox(height: 10),
 
@@ -160,14 +187,14 @@ class _LoginState extends State<Login> {
                       children: [
                         IconButton.outlined(
                           onPressed: () {},
-                          icon: Icon(Icons.facebook),
+                          icon: Icon(Icons.facebook, size: 38),
                         ),
 
                         SizedBox(width: 10),
 
                         IconButton.outlined(
                           onPressed: () {},
-                          icon: Icon(Icons.email),
+                          icon: Icon(Icons.email, size: 38),
                         ),
                       ],
                     ),
@@ -175,7 +202,10 @@ class _LoginState extends State<Login> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Become a Donor? "),
+                        Text(
+                          "Become a Donor? ",
+                          style: TextStyle(fontSize: 15),
+                        ),
                         TextButton(
                           onPressed: () {
                             Navigator.push(
@@ -185,7 +215,10 @@ class _LoginState extends State<Login> {
                               ),
                             );
                           },
-                          child: Text("Register"),
+                          child: Text(
+                            "Register",
+                            style: TextStyle(fontSize: 15),
+                          ),
                         ),
                       ],
                     ),

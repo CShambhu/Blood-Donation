@@ -13,9 +13,10 @@ class _RegistrationState extends State<Registration> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  final _formKey = GlobalKey<FormState>();
+
   Future<void> onSubmit(BuildContext context) async {
     final pref = await SharedPreferences.getInstance();
-
     await pref.setString("username", usernameController.text);
     await pref.setString("password", passwordController.text);
 
@@ -54,7 +55,7 @@ class _RegistrationState extends State<Registration> {
               ),
 
               Positioned(
-                top: 245,
+                top: 265,
                 left: 25,
                 right: 25,
                 child: Card(
@@ -64,75 +65,91 @@ class _RegistrationState extends State<Registration> {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Registration", style: TextStyle(fontSize: 17)),
-                        SizedBox(height: 10),
-
-                        // TextField(
-                        //   decoration: InputDecoration(
-                        //     hintText: "Enter your full name",
-                        //     label: Text("Full Name"),
-                        //     border: OutlineInputBorder(),
-                        //   ),
-                        // ),
-
-                        // SizedBox(height: 10),
-                        // TextField(
-                        //   decoration: InputDecoration(
-                        //     hintText: "Enter your email",
-                        //     label: Text("Email"),
-                        //     border: OutlineInputBorder(),
-                        //   ),
-                        // ),
-                        SizedBox(height: 10),
-                        TextField(
-                          controller: usernameController,
-                          decoration: InputDecoration(
-                            hintText: "Enter your username",
-                            label: Text("Username"),
-                            border: OutlineInputBorder(),
-                          ),
-                        ),
-
-                        SizedBox(height: 10),
-
-                        TextField(
-                          controller: passwordController,
-                          decoration: InputDecoration(
-                            label: Text("Password"),
-                            hintText: "Enter your Password",
-                            border: OutlineInputBorder(),
-                          ),
-                        ),
-
-                        SizedBox(height: 20),
-
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue,
+                    child: Form(
+                      key: _formKey,
+                      autovalidateMode:
+                          AutovalidateMode.onUserInteractionIfError,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            " \" Become a Donor, Register below. \"",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 17,
                             ),
-                            onPressed: () {
-                              onSubmit(context);
+                          ),
+
+                          SizedBox(height: 15),
+                          TextFormField(
+                            controller: usernameController,
+                            decoration: InputDecoration(
+                              hintText: "Enter your username",
+                              label: Text("Username"),
+                              border: OutlineInputBorder(),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "please enter username";
+                              } else {
+                                return null;
+                              }
                             },
-                            child: Text(
-                              "Register",
-                              style: TextStyle(color: Colors.white),
+                          ),
+
+                          SizedBox(height: 10),
+
+                          TextFormField(
+                            controller: passwordController,
+                            decoration: InputDecoration(
+                              label: Text("Password"),
+                              hintText: "Enter your Password",
+                              border: OutlineInputBorder(),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "please enter password";
+                              }
+                              if (value.length < 8) {
+                                return "password length should be 8 or more";
+                              } else {
+                                return null;
+                              }
+                            },
+                          ),
+
+                          SizedBox(height: 20),
+
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.blue,
+                              ),
+                              onPressed: () {
+                                if (_formKey.currentState!.validate()) {
+                                  onSubmit(context);
+                                }
+                              },
+                              child: Text(
+                                "Register",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
 
               Positioned(
-                top: 670,
+                top: 590,
                 left: 0,
                 right: 0,
                 child: Column(
@@ -140,7 +157,10 @@ class _RegistrationState extends State<Registration> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Already have an account? "),
+                        Text(
+                          "Already have an account?",
+                          style: TextStyle(fontSize: 15),
+                        ),
                         TextButton(
                           onPressed: () {
                             Navigator.push(
@@ -148,7 +168,7 @@ class _RegistrationState extends State<Registration> {
                               MaterialPageRoute(builder: (context) => Login()),
                             );
                           },
-                          child: Text("Login"),
+                          child: Text("Login", style: TextStyle(fontSize: 18)),
                         ),
                       ],
                     ),

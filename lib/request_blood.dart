@@ -8,6 +8,15 @@ class RequestBlood extends StatefulWidget {
 }
 
 class _RequestBloodState extends State<RequestBlood> {
+  final TextEditingController patientNamecontroller = TextEditingController();
+  final TextEditingController hospitalNamecontroller = TextEditingController();
+  final TextEditingController bloodGroupcontroller = TextEditingController();
+  final TextEditingController requiredDatecontroller = TextEditingController();
+  final TextEditingController contactPersoncontroller = TextEditingController();
+  final TextEditingController bloodFormcontroller = TextEditingController();
+  final TextEditingController messagecontroller = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,89 +73,148 @@ class _RequestBloodState extends State<RequestBlood> {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        children: [
-                          TextField(
-                            decoration: InputDecoration(
-                              hintText: "Patient's full name",
-                              labelText: "Full Name",
+                      child: Form(
+                        key: _formKey,
+                        autovalidateMode:
+                            AutovalidateMode.onUserInteractionIfError,
+                        child: Column(
+                          children: [
+                            TextFormField(
+                              controller: patientNamecontroller,
+                              decoration: InputDecoration(
+                                hintText: "Patient's full name",
+                                labelText: "Patient's Name",
 
-                              border: OutlineInputBorder(),
-                            ),
-                          ),
-                          SizedBox(height: 5),
-
-                          TextField(
-                            decoration: InputDecoration(
-                              hintText: "hospital name",
-                              labelText: "Patient admitted hospital",
-
-                              border: OutlineInputBorder(),
-                            ),
-                          ),
-                          SizedBox(height: 5),
-
-                          TextField(
-                            decoration: InputDecoration(
-                              hintText: " Blood Group",
-                              labelText: "Required Blood Group",
-                              border: OutlineInputBorder(),
-                            ),
-                          ),
-                          SizedBox(height: 5),
-
-                          TextField(
-                            decoration: InputDecoration(
-                              hintText: "blood required date",
-                              labelText: "Blood Requirement date",
-
-                              border: OutlineInputBorder(),
-                            ),
-                          ),
-                          SizedBox(height: 5),
-
-                          TextField(
-                            decoration: InputDecoration(
-                              hintText: "Contact Number",
-                              labelText: "Whom to contact",
-
-                              border: OutlineInputBorder(),
-                            ),
-                          ),
-                          SizedBox(height: 5),
-
-                          TextField(
-                            decoration: InputDecoration(
-                              hintText: "Upload form",
-                              labelText: "Blood Requisition form",
-
-                              border: OutlineInputBorder(),
-                            ),
-                          ),
-                          SizedBox(height: 5),
-
-                          TextField(
-                            decoration: InputDecoration(
-                              hintText: "Any Message",
-                              labelText: "Leave a message for donors",
-                              border: OutlineInputBorder(),
-                            ),
-                          ),
-                          SizedBox(height: 10),
-
-                          SizedBox(
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.red,
+                                border: OutlineInputBorder(),
                               ),
-                              onPressed: () {},
-                              child: Text(
-                                "Request ",
-                                style: TextStyle(color: Colors.white),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "please enter patient's name";
+                                }
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 5),
+
+                            TextFormField(
+                              controller: hospitalNamecontroller,
+                              decoration: InputDecoration(
+                                hintText: "hospital name",
+                                labelText: "Patient admitted hospital",
+
+                                border: OutlineInputBorder(),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "please enter patient's admitted hospital name";
+                                }
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 5),
+
+                            TextFormField(
+                              decoration: InputDecoration(
+                                hintText: " Blood Group",
+                                labelText: "Required Blood Group",
+                                border: OutlineInputBorder(),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "please enter patient's blood group";
+                                }
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 5),
+
+                            TextFormField(
+                              decoration: InputDecoration(
+                                hintText: "blood required date",
+                                labelText: "Blood Requirement date",
+
+                                border: OutlineInputBorder(),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "please enter when is blood required";
+                                }
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 5),
+
+                            TextFormField(
+                              decoration: InputDecoration(
+                                hintText: "Contact Number",
+                                labelText: "Whom to contact",
+
+                                border: OutlineInputBorder(),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "please enter contact number";
+                                }
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 5),
+
+                            TextFormField(
+                              decoration: InputDecoration(
+                                hintText: "Upload form",
+                                labelText: "Blood Requisition form",
+
+                                border: OutlineInputBorder(),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "please upload blood requisition form";
+                                }
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 5),
+
+                            TextFormField(
+                              decoration: InputDecoration(
+                                hintText: "Any Message",
+                                labelText: "Leave a message for donors",
+                                border: OutlineInputBorder(),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "please leave any message for donor";
+                                }
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 10),
+
+                            SizedBox(
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.red,
+                                ),
+                                onPressed: () {
+                                  if (_formKey.currentState!.validate()) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          "You have requested for blood.",
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                },
+                                child: Text(
+                                  "Request ",
+                                  style: TextStyle(color: Colors.white),
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),

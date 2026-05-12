@@ -13,6 +13,7 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   String username = "";
 
+  @override
   void initState() {
     super.initState();
     loadUsername(); //
@@ -50,9 +51,9 @@ class _ProfileState extends State<Profile> {
                   MaterialPageRoute(builder: (context) => Login()),
                 );
 
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(SnackBar(content: Text("Logout Successfully")));
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("Logged Out Successfully")),
+                );
               },
               child: Text("Yes"),
             ),
@@ -107,7 +108,7 @@ class _ProfileState extends State<Profile> {
                   right: 0,
                   left: 0,
                   child: Center(
-                    child: Text("$username", style: TextStyle(fontSize: 25)),
+                    child: Text(username, style: TextStyle(fontSize: 25)),
                   ),
                 ),
 
@@ -190,7 +191,7 @@ class _ProfileState extends State<Profile> {
                           logOut(context);
                         },
                         child: Text(
-                          " LogOut",
+                          "LogOut",
                           style: TextStyle(fontSize: 15, color: Colors.white),
                         ),
                       ),
