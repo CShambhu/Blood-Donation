@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class RequestBlood extends StatefulWidget {
   const RequestBlood({super.key});
@@ -16,6 +17,24 @@ class _RequestBloodState extends State<RequestBlood> {
   final TextEditingController bloodFormcontroller = TextEditingController();
   final TextEditingController messagecontroller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+  String selectedDate = "No Date";
+  String? selectedBloodGroup;
+  Future<void> pickDate() async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1990),
+      lastDate: DateTime(3000),
+    );
+
+    if (pickedDate != null) {
+      setState(() {
+        selectedDate =
+            "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +98,14 @@ class _RequestBloodState extends State<RequestBlood> {
                             AutovalidateMode.onUserInteractionIfError,
                         child: Column(
                           children: [
+                            //patient's name
                             TextFormField(
+                              keyboardType: TextInputType.name,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                  RegExp(r'[a-zA-Z ]'),
+                                ),
+                              ],
                               controller: patientNamecontroller,
                               decoration: InputDecoration(
                                 hintText: "Patient's full name",
@@ -91,11 +117,15 @@ class _RequestBloodState extends State<RequestBlood> {
                                 if (value == null || value.isEmpty) {
                                   return "please enter patient's name";
                                 }
+                                if (value.length != 32) {
+                                  return "please enter patient's name";
+                                }
                                 return null;
                               },
                             ),
                             SizedBox(height: 5),
 
+                            //hospital name
                             TextFormField(
                               controller: hospitalNamecontroller,
                               decoration: InputDecoration(
@@ -113,38 +143,141 @@ class _RequestBloodState extends State<RequestBlood> {
                             ),
                             SizedBox(height: 5),
 
-                            TextFormField(
+                            // TextFormField(
+                            //   controller: bloodGroupcontroller,
+                            //   readOnly: true,
+
+                            //   decoration: InputDecoration(
+                            //     hintText: " Blood Group",
+                            //     labelText: "Required Blood Group",
+                            //     border: OutlineInputBorder(),
+                            //   ),
+                            //   validator: (value) {
+                            //     if (value == null || value.isEmpty) {
+                            //       return "please enter patient's blood group";
+                            //     }
+                            //     return null;
+                            //   },
+                            // ),
+                            // FIXED: replaced TextFormField with DropdownButtonFormField
+                            DropdownButtonFormField<String>(
+                              value: selectedBloodGroup,
+
                               decoration: InputDecoration(
-                                hintText: " Blood Group",
+                                hintText: "Blood Group",
                                 labelText: "Required Blood Group",
                                 border: OutlineInputBorder(),
                               ),
+
+                              items: const [
+                                DropdownMenuItem(
+                                  value: 'A+',
+                                  child: Text('A+'),
+                                ),
+                                DropdownMenuItem(
+                                  value: 'A-',
+                                  child: Text('A-'),
+                                ),
+                                DropdownMenuItem(
+                                  value: 'B+',
+                                  child: Text('B+'),
+                                ),
+                                DropdownMenuItem(
+                                  value: 'B-',
+                                  child: Text('B-'),
+                                ),
+                                DropdownMenuItem(
+                                  value: 'O+',
+                                  child: Text('O+'),
+                                ),
+                                DropdownMenuItem(
+                                  value: 'O-',
+                                  child: Text('O-'),
+                                ),
+                                DropdownMenuItem(
+                                  value: 'AB+',
+                                  child: Text('AB+'),
+                                ),
+                                DropdownMenuItem(
+                                  value: 'AB-',
+                                  child: Text('AB-'),
+                                ),
+                              ],
+
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedBloodGroup = value;
+                                });
+                              },
+
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return "please enter patient's blood group";
+                                  return "please select patient's blood group";
                                 }
                                 return null;
                               },
                             ),
                             SizedBox(height: 5),
 
+                            //DateTime
                             TextFormField(
+                              controller: requiredDatecontroller,
+                              readOnly: true,
+                              onTap: () async {
+                                DateTime? pickedDate = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(1990),
+                                  lastDate: DateTime(3000),
+                                  builder: (context, child) {
+                                    return Transform.scale(
+                                      scale: 0.75,
+                                      child: child,
+                                    );
+                                  },
+                                );
+                                if (pickedDate != null) {
+                                  TimeOfDay? pickedTime = await showTimePicker(
+                                    context: context,
+                                    initialTime: TimeOfDay.now(),
+                                    builder: (context, child) {
+                                      return Transform.scale(
+                                        scale: 0.85,
+                                        child: child,
+                                      );
+                                    },
+                                  );
+
+                                  if (pickedTime != null) {
+                                    setState(() {
+                                      requiredDatecontroller.text =
+                                          "On ${pickedDate.day}/${pickedDate.month}/${pickedDate.year},  "
+                                          "By ${pickedTime.format(context)}";
+                                    });
+                                  }
+                                }
+                              },
+
                               decoration: InputDecoration(
                                 hintText: "blood required date",
                                 labelText: "Blood Requirement date",
-
                                 border: OutlineInputBorder(),
                               ),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return "please enter when is blood required";
+                                  return "please enter blood required date";
                                 }
                                 return null;
                               },
                             ),
                             SizedBox(height: 5),
 
+                            // Contact
                             TextFormField(
+                              keyboardType: TextInputType.number,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                              ],
                               decoration: InputDecoration(
                                 hintText: "Contact Number",
                                 labelText: "Whom to contact",
@@ -155,11 +288,16 @@ class _RequestBloodState extends State<RequestBlood> {
                                 if (value == null || value.isEmpty) {
                                   return "please enter contact number";
                                 }
+                                if (value.length != 10) {
+                                  return 'Invalid number format';
+                                }
+
                                 return null;
                               },
                             ),
                             SizedBox(height: 5),
 
+                            //Blood Form
                             TextFormField(
                               decoration: InputDecoration(
                                 hintText: "Upload form",
@@ -176,6 +314,7 @@ class _RequestBloodState extends State<RequestBlood> {
                             ),
                             SizedBox(height: 5),
 
+                            //message
                             TextFormField(
                               decoration: InputDecoration(
                                 hintText: "Any Message",
