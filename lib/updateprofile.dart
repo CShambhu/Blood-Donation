@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class UpdateProfile extends StatefulWidget {
   const UpdateProfile({super.key});
@@ -15,6 +16,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
   final TextEditingController phoneNumbercontroller = TextEditingController();
   final TextEditingController lastDonationcontroller = TextEditingController();
   final TextEditingController timesDonationcontroller = TextEditingController();
+  String? selectedBloodGroup;
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +75,14 @@ class _UpdateProfileState extends State<UpdateProfile> {
                             AutovalidateMode.onUserInteractionIfError,
                         child: Column(
                           children: [
+                            //Full Name
                             TextFormField(
+                              keyboardType: TextInputType.name,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                  RegExp(r'[a-zA-Z ]'),
+                                ),
+                              ],
                               decoration: InputDecoration(
                                 hintText: "Enter your full name",
                                 labelText: "Full Name",
@@ -88,7 +97,14 @@ class _UpdateProfileState extends State<UpdateProfile> {
                             ),
                             SizedBox(height: 10),
 
+                            //Address
                             TextFormField(
+                              keyboardType: TextInputType.name,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                  RegExp(r'[a-zA-Z ]'),
+                                ),
+                              ],
                               decoration: InputDecoration(
                                 hintText: "Enter your Current Address",
                                 labelText: "Curent Address",
@@ -103,7 +119,24 @@ class _UpdateProfileState extends State<UpdateProfile> {
                             ),
                             SizedBox(height: 10),
 
+                            //Date Of Birth
                             TextFormField(
+                              controller: birthDatecontroller,
+                              readOnly: true,
+                              onTap: () async {
+                                DateTime? pickedDate = await showDatePicker(
+                                  context: context,
+                                  firstDate: DateTime(1900),
+                                  lastDate: DateTime(2050),
+                                );
+
+                                if (pickedDate != null) {
+                                  setState(() {
+                                    birthDatecontroller.text =
+                                        "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
+                                  });
+                                }
+                              },
                               decoration: InputDecoration(
                                 hintText: "Your Date of birth",
                                 labelText: "Date of Birth",
@@ -118,7 +151,12 @@ class _UpdateProfileState extends State<UpdateProfile> {
                             ),
                             SizedBox(height: 10),
 
+                            //Phone Number
                             TextFormField(
+                              keyboardType: TextInputType.numberWithOptions(),
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                              ],
                               decoration: InputDecoration(
                                 hintText: "Enter your Phone Number",
                                 labelText: "Phone Number",
@@ -128,17 +166,62 @@ class _UpdateProfileState extends State<UpdateProfile> {
                                 if (value == null || value.isEmpty) {
                                   return "please enter your phone number";
                                 }
+                                if (value.length != 10) {
+                                  return "please enter valid phone number";
+                                }
                                 return null;
                               },
                             ),
                             SizedBox(height: 10),
 
-                            TextFormField(
+                            //Blood Group
+                            DropdownButtonFormField(
+                              initialValue: selectedBloodGroup,
                               decoration: InputDecoration(
                                 hintText: "Your Blood Group",
                                 labelText: "Blood Group",
                                 border: OutlineInputBorder(),
                               ),
+                              items: const [
+                                DropdownMenuItem(
+                                  value: "A+",
+                                  child: Text("A+"),
+                                ),
+                                DropdownMenuItem(
+                                  value: "A-",
+                                  child: Text("A-"),
+                                ),
+                                DropdownMenuItem(
+                                  value: "B+",
+                                  child: Text("B+"),
+                                ),
+                                DropdownMenuItem(
+                                  value: "B-",
+                                  child: Text("B-"),
+                                ),
+                                DropdownMenuItem(
+                                  value: "AB+",
+                                  child: Text("AB+"),
+                                ),
+                                DropdownMenuItem(
+                                  value: "AB-",
+                                  child: Text("AB-"),
+                                ),
+                                DropdownMenuItem(
+                                  value: "O+",
+                                  child: Text("O+"),
+                                ),
+                                DropdownMenuItem(
+                                  value: "O-",
+                                  child: Text("O-"),
+                                ),
+                              ],
+                              onChanged: (value) => {
+                                setState(() {
+                                  selectedBloodGroup = value;
+                                }),
+                              },
+
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return "please enter your blood group";
@@ -148,13 +231,31 @@ class _UpdateProfileState extends State<UpdateProfile> {
                             ),
                             SizedBox(height: 10),
 
+                            //last donation date
                             TextFormField(
+                              readOnly: true,
+                              controller: lastDonationcontroller,
                               decoration: InputDecoration(
                                 hintText:
                                     "When did you donate blood last time?",
                                 labelText: "Last Donation",
                                 border: OutlineInputBorder(),
                               ),
+
+                              onTap: () async {
+                                DateTime? selectedDate = await showDatePicker(
+                                  context: context,
+                                  firstDate: DateTime(1900),
+                                  lastDate: DateTime(3000),
+                                );
+
+                                if (selectedDate != null) {
+                                  setState(() {
+                                    lastDonationcontroller.text =
+                                        "${selectedDate.day}/${selectedDate.month}/${selectedDate.year}";
+                                  });
+                                }
+                              },
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return "please enter your last donation date";
@@ -164,7 +265,12 @@ class _UpdateProfileState extends State<UpdateProfile> {
                             ),
                             SizedBox(height: 10),
 
+                            // Blood Donated Times
                             TextFormField(
+                              keyboardType: TextInputType.numberWithOptions(),
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                              ],
                               decoration: InputDecoration(
                                 hintText:
                                     "How many times have you donated blood",

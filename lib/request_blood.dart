@@ -160,8 +160,10 @@ class _RequestBloodState extends State<RequestBlood> {
                             //   },
                             // ),
                             // FIXED: replaced TextFormField with DropdownButtonFormField
+
+                            //Blood Group
                             DropdownButtonFormField<String>(
-                              value: selectedBloodGroup,
+                              initialValue: selectedBloodGroup,
 
                               decoration: InputDecoration(
                                 hintText: "Blood Group",
