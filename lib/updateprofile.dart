@@ -25,7 +25,13 @@ class _UpdateProfileState extends State<UpdateProfile> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Text("Profile Update"),
+        title: Center(
+          child: Text(
+            "Update your profile \nbefore requesting for blood",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: SizedBox(
@@ -44,21 +50,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                 ),
               ),
               Positioned(
-                top: 80,
-                left: 0,
-                right: 0,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Text(
-                    "Update your profile before requesting for blood",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
-              SizedBox(height: 10),
-
-              Positioned(
-                top: 140,
+                top: 90,
                 left: 0,
                 right: 0,
                 child: Padding(

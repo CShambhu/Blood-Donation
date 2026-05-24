@@ -39,12 +39,6 @@ class _RequestBloodState extends State<RequestBlood> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Text("Request Blood"),
-      ),
       body: SingleChildScrollView(
         child: SizedBox(
           height: 920,
@@ -62,7 +56,7 @@ class _RequestBloodState extends State<RequestBlood> {
                 ),
               ),
               Positioned(
-                top: 90,
+                top: 75,
                 left: 0,
                 right: 0,
                 child: Center(
@@ -74,14 +68,14 @@ class _RequestBloodState extends State<RequestBlood> {
               ),
               SizedBox(height: 10),
               Positioned(
-                top: 500,
+                top: 400,
                 left: 0,
                 right: 0,
                 child: Image.asset("assets/images/blood_donation.png"),
               ),
 
               Positioned(
-                top: 120,
+                top: 105,
                 left: 0,
                 right: 0,
                 child: Padding(

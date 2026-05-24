@@ -66,12 +66,6 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Row(children: [Text("Profile")]),
-      ),
       body: Column(
         children: [
           SizedBox(
@@ -91,7 +85,7 @@ class _ProfileState extends State<Profile> {
                   ),
                 ),
                 Positioned(
-                  top: 110,
+                  top: 95,
 
                   child: CircleAvatar(
                     backgroundColor: Colors.white,
@@ -99,12 +93,12 @@ class _ProfileState extends State<Profile> {
                   ),
                 ),
                 Positioned(
-                  top: 128,
+                  top: 110,
 
                   child: Image.asset("assets/images/superman.png", height: 150),
                 ),
                 Positioned(
-                  top: 285,
+                  top: 265,
                   right: 0,
                   left: 0,
                   child: Center(
@@ -113,7 +107,7 @@ class _ProfileState extends State<Profile> {
                 ),
 
                 Positioned(
-                  top: 330,
+                  top: 300,
                   right: 0,
                   left: 0,
                   child: Padding(
@@ -159,7 +153,7 @@ class _ProfileState extends State<Profile> {
                   ),
                 ),
                 Positioned(
-                  top: 630,
+                  top: 600,
                   left: 0,
                   right: 0,
                   child: Row(

@@ -1,16 +1,31 @@
 import 'package:blood_donation/check_request.dart';
+import 'package:blood_donation/homecontent.dart';
 import 'package:blood_donation/profile.dart';
 import 'package:blood_donation/request_blood.dart';
 import 'package:flutter/material.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
-
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
+  int _selectedIndex = 0;
+  final List<String> _titles = [
+    "Blood Donation",
+    "Check Request",
+    "Request Blood",
+    "Profile",
+  ];
+
+  final List<Widget> _screens = [
+    HomeContent(),
+    CheckRequest(),
+    RequestBlood(),
+    Profile(),
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,91 +33,31 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Row(
-          children: [
-            Text("Blood Donation"),
-            Spacer(),
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Profile()),
-                );
-              },
-              icon: Icon(Icons.person, size: 45),
-            ),
-          ],
-        ),
+        title: Row(children: [Text(_titles[_selectedIndex])]),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 720,
-              child: Stack(
-                children: [
-                  Container(
-                    width: double.infinity,
-                    height: 500,
-                    decoration: const BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.vertical(
-                        bottom: Radius.circular(70),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    top: 100,
-                    right: 0,
-                    left: 0,
-                    child: Center(
-                      child: Text(
-                        " DO YOU KNOW? ",
-                        style: TextStyle(fontSize: 20),
-                      ),
-                    ),
-                  ),
+      body: _screens[_selectedIndex],
 
-                  Positioned(
-                    top: 550,
-                    right: 0,
-                    left: 0,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: Size(80, 40),
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => CheckRequest(),
-                              ),
-                            );
-                          },
-                          child: Text("Check Blood Requests"),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => RequestBlood(),
-                              ),
-                            );
-                          },
-                          child: Text("Request Blood"),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+      bottomNavigationBar: GNav(
+        selectedIndex: _selectedIndex,
+        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        // tabBackgroundColor: Colors.grey,
+        backgroundColor: const Color.fromARGB(255, 46, 61, 68),
+        activeColor: Colors.blueGrey,
+        color: Colors.white,
+        style: GnavStyle.oldSchool,
+        textSize: 13,
+
+        onTabChange: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+        tabs: [
+          GButton(icon: Icons.home, text: "Home"),
+          GButton(icon: Icons.list_alt, text: "Check Request"),
+          GButton(icon: Icons.bloodtype, text: "Request Blood"),
+          GButton(icon: Icons.person, text: "Profile"),
+        ],
       ),
     );
   }
