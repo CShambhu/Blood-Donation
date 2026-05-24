@@ -11,20 +11,14 @@ class _CheckRequestState extends State<CheckRequest> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Text("Blood Requests"),
-      ),
       body: Column(
         children: [
           SizedBox(
-            height: 800,
+            height: 650,
             child: Stack(
               children: [
                 Container(
-                  height: 500,
+                  height: 400,
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: Colors.red,
@@ -34,13 +28,13 @@ class _CheckRequestState extends State<CheckRequest> {
                   ),
                 ),
                 Positioned(
-                  top: 190,
+                  top: 120,
                   left: 0,
                   right: 0,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 30),
                     child: SizedBox(
-                      height: 450,
+                      height: 550,
                       width: double.infinity,
                       child: SingleChildScrollView(
                         child: Card(

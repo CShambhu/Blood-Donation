@@ -1,5 +1,4 @@
-import 'package:blood_donation/request_blood.dart';
-import 'package:blood_donation/updateprofile.dart';
+import 'package:blood_donation/home.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,7 +15,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Blood Donation',
       theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
-      home: UpdateProfile(),
+      home: Home(),
     );
   }
 }
